@@ -207,7 +207,6 @@ void do_service(int conn) {
                 fputs(recvbuf, stdout);
                 writen(conn, recvbuf, strlen(recvbuf));//回射
         }
-
 }
 
 int main(void) {
@@ -248,12 +247,12 @@ int main(void) {
         	printf("ip = %s port = %d\n", inet_ntoa(peeraddr.sin_addr), ntohs(peeraddr.sin_port));
 
 		struct sockaddr_in peeraddr;
-    socklen_t peeraddrlen = sizeof(peeraddr);
-    //使用getpeername获取sock绑定的对方的地址和端口
-    if (getpeername(conn, (struct sockaddr*)&peeraddr, &peeraddrlen) < 0)
-	    ERR_EXIT("getpeername");
+    		socklen_t peeraddrlen = sizeof(peeraddr);
+    		//使用getpeername获取sock绑定的对方的地址和端口
+    		if (getpeername(conn, (struct sockaddr*)&peeraddr, &peeraddrlen) < 0)
+			ERR_EXIT("getpeername");
 
-    printf("client ip = %s port = %d\n", inet_ntoa(peeraddr.sin_addr), ntohs(peeraddr.sin_port));
+    		printf("client ip = %s port = %d\n", inet_ntoa(peeraddr.sin_addr), ntohs(peeraddr.sin_port));
 
 		pid = fork();
 		if (pid == -1)
@@ -266,7 +265,6 @@ int main(void) {
 			close(conn);//对于父进程，不关心连接套接字，只关心监听套接字
 		}
 	}
-
 	return 0;
 }
 ```
@@ -398,12 +396,12 @@ int main(void) {
 	printf("ip = %s port = %d\n", inet_ntoa(localaddr.sin_addr), ntohs(localaddr.sin_port));
 	
 	struct sockaddr_in peeraddr;
-  socklen_t peeraddrlen = sizeof(peeraddr);
-  //使用getpeername获取sock绑定的对方的地址和端口
-  if (getpeername(conn, (struct sockaddr*)&peeraddr, &peeraddrlen) < 0)
-	  ERR_EXIT("getpeername");
+  	socklen_t peeraddrlen = sizeof(peeraddr);
+  	//使用getpeername获取sock绑定的对方的地址和端口
+  	if (getpeername(conn, (struct sockaddr*)&peeraddr, &peeraddrlen) < 0)
+		ERR_EXIT("getpeername");
 
-  printf("peer ip = %s port = %d\n", inet_ntoa(peeraddr.sin_addr), ntohs(peeraddr.sin_port));
+  	printf("peer ip = %s port = %d\n", inet_ntoa(peeraddr.sin_addr), ntohs(peeraddr.sin_port));
 	
 
 	char sendbuf[1024] = {0};
