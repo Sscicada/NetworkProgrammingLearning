@@ -213,6 +213,7 @@ void echo_cli(int sock) {
 		}
 		
 		if (FD_ISSET(fd_stdin, &rset)) {
+			//如果从标准输入获得EOF
 			if (fgets(sendbuf, sizeof(sendbuf), stdin) == NULL)
 				break;
 			writen(sock, sendbuf, strlen(sendbuf));
@@ -257,10 +258,5 @@ int main(void) {
 	echo_cli(sock);	
 	return 0;
 ```
-
-
-
-
-
 
 **如果需要处理多个 I/O ，又想用单进程的方式实现，那么用 select 比较方便**
