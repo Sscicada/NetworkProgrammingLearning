@@ -144,10 +144,13 @@ void echo_cli(int sock) {
 	char sendbuf[1024] = {0};
         char recvbuf[1024] = {0};
 
+	int stdineof = 0;		//标准输入是否关闭的标志
+
 	//不断循环检测事件
 	while (1) {
-		//加入集合
-		FD_SET(fd_stdin, &rset);
+		//标准输入关闭了，就不用加入集合中
+		if (stdineof == 0)
+		       	FD_SET(fd_stdin, &rset);
 		FD_SET(sock, &rset);
 		nready = select(maxfd + 1, &rset, NULL, NULL, NULL);
 		if (nready == -1)
@@ -162,7 +165,7 @@ void echo_cli(int sock) {
                 	if (ret == -1) {
                         	ERR_EXIT("readline");
                 	} else if (ret == 0) {//对方一旦关闭，跳出循环
-                        	printf("peer close\n");
+                        	printf("server close\n");
                         	break;
                 	}
                 	fputs(recvbuf, stdout);
@@ -174,6 +177,7 @@ void echo_cli(int sock) {
 		if (FD_ISSET(fd_stdin, &rset)) {
 			//如果从标准输入获得EOF，只关闭写入
 			if (fgets(sendbuf, sizeof(sendbuf), stdin) == NULL) {
+				stdineof = 1;
 				shutdown(sock, SHUT_WR);
 			} else {
 				writen(sock, sendbuf, strlen(sendbuf));
@@ -214,11 +218,10 @@ int main(void) {
 	if (getpeername(sock, (struct sockaddr*)&peeraddr, &peeraddrlen) < 0)
 		ERR_EXIT("getpeername");
 
-	printf("peer ip = %s port = %d\n", inet_ntoa(peeraddr.sin_addr), ntohs(peeraddr.sin_port));
+	printf("server ip = %s port = %d\n", inet_ntoa(peeraddr.sin_addr), ntohs(peeraddr.sin_port));
 
 	echo_cli(sock);	
 	return 0;
 }
 ```
 
-`
