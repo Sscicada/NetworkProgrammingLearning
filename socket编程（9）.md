@@ -253,10 +253,11 @@ int main(void) {
 				int ret = readline(conn, recvbuf, 1024);
 		                if (ret == -1) {
                 		        ERR_EXIT("readline");
-                		} else if (ret == 0) {//客户端一旦关闭，不再关心它的可读事件，还要记得从client数组中移除
+                		} else if (ret == 0) {	//客户端一旦关闭，关闭套接口，不再关心它的可读事件，还要记得从client数组中移除
                         		printf("client close\n");
 					FD_CLR(conn, &allset);
 					client[i] = -1;
+					close(conn);
                 		}
 				
                 		fputs(recvbuf, stdout);
