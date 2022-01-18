@@ -29,6 +29,8 @@ fcntl(fd, F_SETFL, flag|O_NONBLOCK);
 
 #### I/O 复用
 
+我们可以把标准输入、套接字等都看做 I/O的一路，多路复用的意思，就是在任何一路 I/O 有“事件”发生的情况下，通知应用程序去处理相应的 I/O 事件，这样我们的程序就变成了“多面手”，在同一时刻仿佛可以处理多个 I/O 事件。
+
 用 select 函数来管理多个文件描述符，一旦其中某个文件描述符有数据到来，select 就返回（阻塞的位置提前到 select）
 
 ![image](https://user-images.githubusercontent.com/71170476/149646994-2605f36d-d7a8-4275-b24b-7407b01fd44e.png)
