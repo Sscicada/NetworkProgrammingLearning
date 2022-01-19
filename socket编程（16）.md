@@ -10,7 +10,12 @@
 - `UNIX` 域套接字与传统套接字的区别是用路径名来表示协议族的描述。
 
 ### UNIX 域地址结构
-
+```C
+struct sockaddr_un {
+  		sa_family_t sun_family;               /* AF_UNIX */
+		char        sun_path[108];            /* Pathname */
+	};
+```
 
 ### UNIX 域字节流回射客户/服务
 echosrv.c
