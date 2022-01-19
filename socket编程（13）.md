@@ -7,11 +7,14 @@
 ### epoll 使用
 
 ```C
+//创建一个 epoll 实例，返回值: 若成功返回一个大于 0 的值，表示 epoll 实例；若返回 -1 表示出错
 int epoll_create(int size);
 int epoll_create1(int flags);
 
+//向 epoll 实例增加或删除监控的事件
 int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
 
+//epoll_wait() 函数类似之前的 poll 和 select 函数，调用者进程被挂起，在等待内核 I/O 事件的分发
 int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout);
 
  typedef union epoll_data {
